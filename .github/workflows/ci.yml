@@ -1,0 +1,33 @@
+name: Source safety and compile checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  macos-static-build:
+    name: macOS static / SDK compilation (no display switching)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check source syntax and scripts
+        run: |
+          set -euo pipefail
+          xcrun swiftc -frontend -parse Sources/*.swift
+          for f in ./*.command; do bash -n "$f"; done
+          python3 Tests/audit.py
+          shasum -a 256 -c SHA256SUMS.txt
+      - name: Run 53 platform-independent policy tests
+        run: |
+          set -euo pipefail
+          xcrun swiftc -swift-version 5 Sources/Policy.swift Tests/main.swift -o "$RUNNER_TEMP/imacsolo-policy-tests"
+          "$RUNNER_TEMP/imacsolo-policy-tests"
+      - name: Build app executable without running it
+        run: |
+          set -euo pipefail
+          xcrun swiftc -swift-version 5 -O -target arm64-apple-macos13.0 \
+            Sources/Policy.swift Sources/DisplayBridge.swift Sources/Guardian.swift \
+            Sources/App.swift Sources/main.swift \
+            -framework AppKit -framework CoreGraphics -o "$RUNNER_TEMP/iMacSolo"

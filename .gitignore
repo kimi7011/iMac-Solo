@@ -1,0 +1,35 @@
+# macOS / editor
+.DS_Store
+.AppleDouble
+.LSOverride
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# build artifacts and logs
+.build/
+DerivedData/
+build/
+dist/
+*.app/
+*.dmg
+*.ipa
+*.xcarchive/
+*.log
+安裝記錄.log
+*.dSYM/
+.swiftpm/
+
+# secrets / local-only configuration
+.env
+.env.*
+!.env.example
+*.p12
+*.mobileprovision
+*.key
+*.pem
+*.token
+credentials.json
+recovery.json
+events.log
