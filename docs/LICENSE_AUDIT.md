@@ -69,7 +69,9 @@
 
 **審查狀態：檔案及依賴盤點已完成，ScreenOff、MacDisplay 的 MIT LICENSE 已直接核對；跨專案完整源碼比對及法律清權尚未完成。**
 
-## 6. 2026-11-05 補充：GitHub 發布腳本與連線界線
+## 6. 2026-11-05 補充：發布前的歷史紀錄
+
+原始發布套件曾包含 GitHub 發布腳本；該輔助腳本已從目前儲存庫移除。以下保留當時的審查紀錄。
 
 新增 `發布到GitHub.command`（僅供使用者 Mac 本機執行）。此腳本使用 GitHub 官方 CLI `gh`，在本機完成檔案完整性確認、靜態規則與 macOS SDK 編譯後，需使用者輸入 `PUBLIC` 才會執行 `gh repo create ... --public --push`；不內嵌 Token、亦不會發佈二進位 App。腳本目前只做了語法與靜態審查，**沒有實際推送 GitHub**，也沒有在 Apple SDK 完整編譯。
 
