@@ -4,7 +4,7 @@
 
 iMac Solo 是一款繁體中文 macOS 選單列工具，旨在讓使用者在**外接實體螢幕仍運作**的情況下，要求 macOS 將 iMac 內建顯示器移出線上桌面。它**不是**黑色遮罩、黑桌布或單純降低亮度。工具內含 20 秒操作確認、獨立安全監控程序、恢復指令及本機建置腳本。
 
-> **未完成實機驗證**：已執行 53 項平台無關的安全規則測試、Swift 語法解析與腳本／封裝靜態檢查，但**沒有在 macOS SDK 完整建置**，也**沒有在 iMac M1 + macOS 27 + USB-C 轉 HDMI** 完成實機測試。請勿將本專案描述為已驗證、穩定或能保證恢復。
+> **實驗性版本**：維護者已在 iMac M1 搭配 macOS 27 的環境實測可運行。GitHub Actions 已通過 53 項平台無關的政策測試、靜態檢查與 macOS SDK 編譯。顯示器切換、背光及故障復原尚未完成完整驗證，無法保證所有情況都能恢復。
 
 ## 下載與安裝
 
@@ -17,12 +17,6 @@ iMac Solo 是一款繁體中文 macOS 選單列工具，旨在讓使用者在**�
 5. 接好外接顯示器、確認控制視窗真的在外接螢幕，再手動執行**20 秒測試**。僅當 HDMI 畫面可用且內建面板沒有可見背光時，才按下保留。
 
 如雙擊 `.command` 沒有執行，可在終端機輸入 `/bin/bash `（尾端空白），把 `安裝.command` 拖入終端機後按 Return。**不要停用 SIP、Gatekeeper 或其他系統安全機制。**
-
-## 發布到 GitHub（公開原始碼）
-
-如果希望公開這個實驗專案，內附 [`發布到GitHub.command`](發布到GitHub.command)。在你的 Mac 上先安裝 [GitHub CLI](https://cli.github.com/) 並執行 `gh auth login`，然後雙擊該檔案。它會先驗證檔案、執行政策測試並**嘗試完成 macOS SDK 編譯**，只有你輸入 `PUBLIC` 才會建立公開儲存庫並上傳 `main`。這個腳本不收集 GitHub Token，且不會發布未測試的 `.app` 或 `.dmg`。
-
-**提醒：** ChatGPT 的 GitHub 外掛連線與 Mac 上的 `gh` 命令列登入是兩回事。詳見 [`docs/PUBLISHING.md`](docs/PUBLISHING.md)。
 
 ## 功能邊界與安全
 
@@ -44,7 +38,6 @@ iMac Solo 是一款繁體中文 macOS 選單列工具，旨在讓使用者在**�
 | `緊急恢復.command` | 只嘗試重新啟用內建顯示器 |
 | `docs/LICENSE_AUDIT.md` | 第三方來源、授權與未決風險檢查報告 |
 | `THIRD_PARTY_NOTICES.md` | 技術參考、未封裝的第三方專案及來源註記 |
-| `docs/PUBLISHING.md` | GitHub 發布及版本標示檢查表 |
 
 ## 自動化檢查（不會關閉螢幕）
 
@@ -56,7 +49,7 @@ python3 Tests/audit.py
 for f in ./*.command; do bash -n "$f"; done
 ```
 
-GitHub Actions 在 macOS runner 中另嘗試完整編譯；**CI 編譯成功不代表硬體操作安全或背光確實關閉**。
+GitHub Actions 在 macOS runner 中執行編譯；**CI 編譯成功不代表硬體操作安全或背光確實關閉**。
 
 ## 開源授權、來源與 AI 協作聲明
 
@@ -64,10 +57,8 @@ GitHub Actions 在 macOS runner 中另嘗試完整編譯；**CI 編譯成功不�
 
 技術上曾參考 [zy0816/ScreenOff](https://github.com/zy0816/ScreenOff)（[MIT](https://github.com/zy0816/ScreenOff/blob/main/LICENSE)）與 [jjongkwann/MacDisplay](https://github.com/jjongkwann/MacDisplay)（[MIT](https://github.com/jjongkwann/MacDisplay/blob/main/LICENSE)；其授權文件另致謝 DisplayDeck），以及 Apple 的系統框架文件。**兩個專案的 LICENSE 原文已核對；仍未完成所有相關程式碼的逐行相似度／衍生作品鑑別，不能保證零著作權風險。** 來源與審查限制詳見 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) 與 [`docs/LICENSE_AUDIT.md`](docs/LICENSE_AUDIT.md)。
 
-專案內容由 AI 助手依使用者需求協助撰寫與封裝；本次授權審查是技術文件審查，**不是法律意見，亦不能證明與所有現存專案不存在相似程式碼**。欲對外發行前，維護者應審查程式碼、確認權利及進行 Mac 實機測試。
+專案內容由 AI 協助撰寫與封裝。授權審查屬技術盤點，並非法律意見；完整的跨專案相似度與衍生作品鑑別尚未完成。
 
 ## 非官方／非 Apple 認證
 
 iMac Solo 與 Apple、BetterDisplay、ScreenOff、MacDisplay 無關，也不受其背書。Apple [App Review Guidelines §2.5.1](https://developer.apple.com/app-store/review/guidelines/) 要求使用公開 API；本工具使用非公開介面，**不應宣稱符合 Mac App Store 上架規則**。另應留意 [Apple Developer Program Agreement](https://developer.apple.com/support/terms/apple-developer-program-license-agreement/) 對私有 API 的規定。
-
-發布狀態：**experimental / pre-release**。並非已通過 iMac M1＋macOS 27 硬體驗證的穩定版。
